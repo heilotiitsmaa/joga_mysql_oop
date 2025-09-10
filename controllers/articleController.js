@@ -100,9 +100,12 @@ const articleController = {
         console.error(error);
         return res.status(500).send('Serveri viga');
       }
-      res.render('articles/index', { articles });
-    });
-  },
+      if (!articles || articles.length === 0) {
+      return res.status(404).json({ error: 'Artiklit ei leitud' });
+    }
+    res.render('articles/index', { articles });
+  });
+},
 
   // Kuvab ühe artikli HTMLina
   showView(req, res) {
