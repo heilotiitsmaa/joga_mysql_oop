@@ -3,6 +3,10 @@ const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/articleController');
 
+// GET /articles — kuvab kõik artiklid
 router.get('/', articleController.index);
+
+// GET /articles/:slug — kuvab ühe artikli slugi järgi
+router.get('/:slug', articleController.show);
 
 module.exports = router;

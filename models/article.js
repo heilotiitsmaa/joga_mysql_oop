@@ -6,9 +6,14 @@ class Article extends Model {
     return 'article';
   }
 
-  // Kui soovid, saad siin ka callbacki edasi anda
+  // Koikide artiklite hankimine
   static findAll(callback) {
     super.findAll(callback);
+  }
+
+  // Ühe artikli hankimine slug alusel
+  static findOneBySlug(slug, callback) {
+    super.findOne('slug', slug, callback);
   }
 }
 
