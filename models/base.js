@@ -37,6 +37,23 @@ class Model {
       callback(null, results); // Tagastab kogu massiivi, mitte ainult esimese
     });
   }
+  // Uue kirje lisamine andmebaasi
+  static create(data, callback) {
+    // Loo veerunimed ja küsimärgid (?)
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    const columns = keys.join(', ');
+    const placeholders = keys.map(() => '?').join(', ');
+
+    const sql = `INSERT INTO ${this.tableName} (${columns}) VALUES (${placeholders})`;
+
+    db.query(sql, values, (error, result) => {
+      if (error) {
+        return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
+      }
+      callback(null, result.insertId); // Tagasta uue kirje ID
+    });
+  }
 }
 
 module.exports = Model;

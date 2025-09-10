@@ -9,4 +9,7 @@ router.get('/', articleController.index);
 // GET /articles/:slug — kuvab ühe artikli slugi järgi
 router.get('/:slug', articleController.show);
 
+// POST /articles — lisab uue artikli
+router.post('/', articleController.create); //
+
 module.exports = router;

@@ -6,6 +6,9 @@ const authorRoutes = require('./routes/authorRoutes');
 const app = express();
 const PORT = 3000;
 
+// Ilma selleta req.body tühi!
+app.use(express.json());
+
 // Kasuta artikli ruute
 app.use('/articles', articleRoutes);
 app.use('/author', authorRoutes);
