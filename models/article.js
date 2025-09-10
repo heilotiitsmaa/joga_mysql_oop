@@ -15,6 +15,11 @@ class Article extends Model {
   static findOneBySlug(slug, callback) {
     super.findOne('slug', slug, callback);
   }
+  
+  // MITME artikli hankimine author_id järgi
+  static findByAuthorId(authorId, callback) {
+    this.findMany('author_id', authorId, callback);
+  }
 }
 
 module.exports = Article;

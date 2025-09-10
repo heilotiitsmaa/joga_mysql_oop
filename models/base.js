@@ -27,6 +27,16 @@ class Model {
       callback(null, results[0] || null); // Tagastab esimese või nulli
     });
   }
+  // MITME kirje hankimine vastavalt veeru väärtusele
+  static findMany(where, value, callback) {
+    const sql = `SELECT * FROM ${this.tableName} WHERE ${where} = ?`;
+    db.query(sql, [value], (error, results) => {
+      if (error) {
+        return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
+      }
+      callback(null, results); // Tagastab kogu massiivi, mitte ainult esimese
+    });
+  }
 }
 
 module.exports = Model;
