@@ -59,6 +59,7 @@ class Model {
 static update(id, data, callback) {
   const keys = Object.keys(data);
   const values = Object.values(data);
+  
 
   // Loo SET osa: `veerg1 = ?, veerg2 = ?`
   const setClause = keys.map(key => `${key} = ?`).join(', ');
@@ -73,6 +74,16 @@ static update(id, data, callback) {
       return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
     }
     callback(null, result.affectedRows); // Tagasta muudetud ridade arv
+  });
+}
+// Kirje kustutamine
+static delete(id, callback) {
+  const sql = `DELETE FROM ${this.tableName} WHERE id = ?`;
+  db.query(sql, [id], (error, result) => {
+    if (error) {
+      return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
+    }
+    callback(null, result.affectedRows);
   });
 }
 }

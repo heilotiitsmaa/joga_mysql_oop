@@ -3,23 +3,22 @@ const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/articleController');
 
-// GET /articles — kuvab kõik artiklid
-router.get('/', articleController.index);
-
-// GET /articles/:slug — kuvab ühe artikli slugi järgi
-router.get('/:slug', articleController.show);
+// API ruuterid (tagastavad JSONi)
+router.get('/', articleController.index);        // GET /articles → JSON
+router.get('/:slug', articleController.show);    // GET /articles/slug → JSON
 
 // POST /articles — lisab uue artikli
-router.post('/', articleController.create); //
+router.post('/', articleController.create);
 
 // PUT /:id — uuendab artiklit
 router.put('/:id', articleController.update);
 
-// Kuvab kõik artiklid HTMLina
-router.get('/', articleController.indexView);
+// DELETE /:id — kustutab artikli
+router.delete('/:id', articleController.delete);
 
-// Kuvab ühe artikli HTMLina
-router.get('/:slug', articleController.showView);
+// HTML vaadete ruuterid (renderdavad EJS-i)
+router.get('/list', articleController.indexView);        // GET /articles/list → HTML
+router.get('/:slug/view', articleController.showView);   // GET /articles/slug/view → HTML
 
 // Kuvab uue artikli vormi
 router.get('/new', articleController.newView);

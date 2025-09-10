@@ -37,6 +37,10 @@ class Article extends Model {
   }
       super.update(id, data, callback);
   }
+  // Artikli kustutamine
+static delete(id, callback) {
+  super.delete(id, callback);
+}
   
   // Ühe artikli hankimine id järgi
 static findById(id, callback) {
