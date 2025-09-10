@@ -92,7 +92,52 @@ update(req, res) {
       article: { id, ...articleData }
       });
   });
+  },
+  // Kuvab kõik artiklid HTMLina
+indexView(req, res) {
+  Article.findAll((error, articles) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).send('Serveri viga');
+    }
+    res.render('articles/index', { articles });
+  });
+},
+
+// Kuvab ühe artikli HTMLina
+showView(req, res) {
+  const { slug } = req.params;
+  Article.findBySlug(slug, (error, article) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).send('Serveri viga');
+    }
+    if (!article) {
+      return res.status(404).send('Artiklit ei leitud');
+    }
+    res.render('articles/show', { article });
+  });
+},
+// Kuvab uue artikli vormi
+newView(req, res) {
+  res.render('articles/new');
+},
+
+// Kuvab artikli muutmise vormi
+editView(req, res) {
+  const { id } = req.params;
+  Article.findById(id, (error, article) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).send('Serveri viga');
+    }
+    if (!article) {
+      return res.status(404).send('Artiklit ei leitud');
+    }
+    res.render('articles/edit', { article });
+  });
   }
 };
+
 
 module.exports = articleController;

@@ -1,0 +1,9 @@
+<!-- views/articles/new.ejs -->
+<%- include('form', {
+  title: 'Lisa uus artikkel',
+  action: '/articles',
+  method: 'POST',
+  article: {},
+  button: 'Lisa artikkel',
+  formatDateForInput: function(date) { return ''; }
+}) -%>

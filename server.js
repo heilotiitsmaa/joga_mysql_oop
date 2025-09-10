@@ -6,6 +6,12 @@ const authorRoutes = require('./routes/authorRoutes');
 const app = express();
 const PORT = 3000;
 
+app.set('view engine', 'ejs');        // Kasuta EJS-i vaademootorina
+app.set('views', './views');          // Vaadete kaust
+app.use(express.static('public'));    // Staatinud failid (CSS, JS, pildid)
+
+// Middleware vormide andmete parsimiseks
+app.use(express.urlencoded({ extended: true }));
 // Ilma selleta req.body tühi!
 app.use(express.json());
 

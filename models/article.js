@@ -27,15 +27,21 @@ class Article extends Model {
     if (!data.published) {
       data.published = new Date().toISOString().slice(0, 19).replace('T', ' ');
     }
-    
-
     super.create(data, callback);
   }
+
   static update(id, data, callback) {
   // Kui published on tühi, siis jätame seda muutmata
   if (data.published === '') {
     delete data.published;
   }
+      super.update(id, data, callback);
+  }
+  
+  // Ühe artikli hankimine id järgi
+static findById(id, callback) {
+  this.findOne('id', id, callback);
 }
 }
+
 module.exports = Article;

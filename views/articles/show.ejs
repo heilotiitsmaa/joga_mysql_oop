@@ -1,0 +1,14 @@
+<!-- views/articles/show.ejs -->
+<% layout('layout') -%>
+
+<h1><%= article.name %></h1>
+<img src="/images/<%= article.image %>" class="img-fluid mb-3" alt="<%= article.name %>">
+<div class="article-body"><%- article.body %></div>
+
+<div class="mt-4">
+  <a href="/articles" class="btn btn-secondary">Tagasi artiklite juurde</a>
+  <a href="/articles/<%= article.id %>/edit" class="btn btn-warning">Muuda artiklit</a>
+  <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" class="d-inline">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Kas oled kindel?')">Kustuta artikkel</button>
+  </form>
+</div>

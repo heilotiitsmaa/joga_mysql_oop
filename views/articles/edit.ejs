@@ -1,0 +1,13 @@
+<!-- views/articles/edit.ejs -->
+<%- include('form', {
+  title: 'Muuda artiklit',
+  action: '/articles/' + article.id,
+  method: 'PUT',
+  article: article,
+  button: 'Uuenda artiklit',
+  formatDateForInput: function(date) {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toISOString().slice(0, 16);
+  }
+}) -%>
