@@ -1,19 +1,20 @@
 // models/base.js
-const db = require('../utils/db'); // db.js file
+const db = require('../utils/db');
 
 class Model {
   static get tableName() {
-    throw new Error('tableName peab olema määratud');
+    throw new Error('tableName peab olema määratud alamklassis');
   }
 
-  static async findAll() {
+  // Callback-põhine findAll
+  static findAll(callback) {
     const sql = `SELECT * FROM ${this.tableName}`;
-    try {
-      const [rows] = await db.query(sql);
-      return rows;
-    } catch (error) {
-      throw new Error(`Viga tabelis ${this.tableName}: ${error.message}`);
-    }
+    db.query(sql, (error, results) => {
+      if (error) {
+        return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
+      }
+      callback(null, results); // Esimene argument = viga, teine = andmed
+    });
   }
 }
 

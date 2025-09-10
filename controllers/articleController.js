@@ -2,13 +2,14 @@
 const Article = require('../models/article');
 
 const articleController = {
-  async index(req, res) {
-    try {
-      const articles = await Article.findAll();
-      res.json(articles);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+  index(req, res) {
+    Article.findAll((error, articles) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Serveri viga artiklite laadimisel' });
+      }
+      res.json(articles); // Tagasta JSONina
+    });
   }
 };
 

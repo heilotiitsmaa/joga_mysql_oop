@@ -6,8 +6,9 @@ class Article extends Model {
     return 'article';
   }
 
-  static async findAll() {
-    return super.findAll();
+  // Kui soovid, saad siin ka callbacki edasi anda
+  static findAll(callback) {
+    super.findAll(callback);
   }
 }
 
