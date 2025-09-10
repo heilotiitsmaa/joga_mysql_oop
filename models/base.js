@@ -54,6 +54,26 @@ class Model {
       callback(null, result.insertId); // Tagasta uue kirje ID
     });
   }
-}
 
+// Kirje uuendamine
+static update(id, data, callback) {
+  const keys = Object.keys(data);
+  const values = Object.values(data);
+
+  // Loo SET osa: `veerg1 = ?, veerg2 = ?`
+  const setClause = keys.map(key => `${key} = ?`).join(', ');
+
+  const sql = `UPDATE ${this.tableName} SET ${setClause} WHERE id = ?`;
+
+  // Lisa id viimaseks väärtuseks
+  const params = [...values, id];
+
+  db.query(sql, params, (error, result) => {
+    if (error) {
+      return callback(new Error(`Viga tabelis ${this.tableName}: ${error.message}`));
+    }
+    callback(null, result.affectedRows); // Tagasta muudetud ridade arv
+  });
+}
+}
 module.exports = Model;

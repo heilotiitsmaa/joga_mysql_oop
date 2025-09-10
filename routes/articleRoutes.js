@@ -12,4 +12,7 @@ router.get('/:slug', articleController.show);
 // POST /articles — lisab uue artikli
 router.post('/', articleController.create); //
 
+// PUT /:id — uuendab artiklit
+router.put('/:id', articleController.update);
+
 module.exports = router;

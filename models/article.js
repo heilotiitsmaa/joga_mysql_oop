@@ -12,8 +12,8 @@ class Article extends Model {
   }
 
   // Ühe artikli hankimine slug alusel
-  static findOneBySlug(slug, callback) {
-    super.findOne('slug', slug, callback);
+  static findBySlug(slug, callback) {
+    this.findOne('slug', slug, callback);
   }
   
   // MITME artikli hankimine author_id järgi
@@ -22,13 +22,20 @@ class Article extends Model {
   }
    // Uue artikli lisamine
   static create(data, callback) {
+    
     // Lisa automaatselt published kuupäev, kui seda pole
     if (!data.published) {
       data.published = new Date().toISOString().slice(0, 19).replace('T', ' ');
     }
+    
 
     super.create(data, callback);
   }
+  static update(id, data, callback) {
+  // Kui published on tühi, siis jätame seda muutmata
+  if (data.published === '') {
+    delete data.published;
+  }
 }
-
+}
 module.exports = Article;

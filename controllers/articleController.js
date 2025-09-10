@@ -59,6 +59,39 @@ const articleController = {
         article: articleData
       });
     });
+  },
+  // Artikli uuendamine
+update(req, res) {
+  const { id } = req.params;
+  const { name, slug, image, body, author_id, published } = req.body;
+
+  // Kontrolli, kas kõik vajalikud väljad on olemas
+  if (!name || !slug || !image || !body || !author_id) {
+    return res.status(400).json({ error: 'Kõik väljad on kohustuslikud' });
+  }
+
+  const articleData = {
+    name,
+    slug,
+    image,
+    body,
+    author_id,
+    published: published || undefined // Kui published on tühi, siis jätame seda muutmata
+  };
+
+  Article.update(id, articleData, (error, affectedRows) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Serveri viga artikli uuendamisel' });
+    }
+    if (affectedRows === 0) {
+      return res.status(404).json({ error: 'Artiklit ei leitud või muudatusi ei tehtud' });
+    }
+    res.json({
+      message: 'Artikkel on edukalt uuendatud',
+      article: { id, ...articleData }
+      });
+  });
   }
 };
 
