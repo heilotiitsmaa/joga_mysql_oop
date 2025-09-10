@@ -5,4 +5,4 @@ const articleController = require('../controllers/articleController');
 
 router.get('/', articleController.index);
 
-module.exports = router;š
+module.exports = router;
