@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 class UserController {
   // Registreerimine
   register(req, res) {
-    const { username, password } = req.body;
+    // Lisame rolli vastuvõtmise, vaikimisi 'user'
+    const { username, password, role = 'user' } = req.body;
 
-    // Lihtne valideerimine
     if (!username || !password) {
       return res.status(400).json({ error: 'Kasutajanimi ja parool on kohustuslikud' });
     }
@@ -15,7 +15,6 @@ class UserController {
       return res.status(400).json({ error: 'Parool peab olema vähemalt 6 tähemärki pikk' });
     }
 
-    // Kontrolli, kas kasutajanimi on juba olemas
     User.findByUsername(username, (err, existingUser) => {
       if (err) {
         console.error(err);
@@ -25,27 +24,26 @@ class UserController {
         return res.status(409).json({ error: 'Kasutajanimi on juba võetud' });
       }
 
-      // Krüpteeri parool
       bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: 'Parooli krüpteerimise viga' });
         }
 
-        // Salvesta andmebaasi
-        User.create({ username, password: hash }, (err, userId) => {
+        // Salvestame kasutaja koos rolliga
+        User.create({ username, password: hash, role }, (err, userId) => {
           if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Kasutaja registreerimise viga' });
           }
 
-          // Loo sessioon
           req.session.userId = userId;
           req.session.username = username;
+          req.session.role = role; // Salvestame rolli ka sessiooni
 
           res.status(201).json({
             message: 'Kasutaja edukalt registreeritud',
-            user: { id: userId, username }
+            user: { id: userId, username, role }
           });
         });
       });
@@ -69,7 +67,6 @@ class UserController {
         return res.status(401).json({ error: 'Vale kasutajanimi või parool' });
       }
 
-      // Võrdle paroole
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
           console.error(err);
@@ -79,13 +76,18 @@ class UserController {
           return res.status(401).json({ error: 'Vale kasutajanimi või parool' });
         }
 
-        // Loo sessioon
+        // Lisame rolli sessiooni andmetesse
         req.session.userId = user.id;
         req.session.username = user.username;
+        req.session.role = user.role; 
 
         res.json({
           message: 'Sisselogimine õnnestus',
-          user: { id: user.id, username: user.username }
+          user: { 
+            id: user.id, 
+            username: user.username, 
+            role: user.role // Tagastame rolli ka vastuses testimiseks
+          }
         });
       });
     });

@@ -6,17 +6,19 @@ class User {
     return 'users';
   }
 
-  // Uue kasutaja loomine
+  // Uue kasutaja loomine (täiendatud rolliga)
   static create(data, callback) {
-    const { username, password } = data;
-    const sql = `INSERT INTO ${this.tableName} (username, password) VALUES (?, ?)`;
-    db.query(sql, [username, password], (error, result) => {
+    // Lisame 'role' välja, vaikimisi väärtus on 'user' 
+    const { username, password, role = 'user' } = data; 
+    const sql = `INSERT INTO ${this.tableName} (username, password, role) VALUES (?, ?, ?)`;
+    
+    db.query(sql, [username, password, role], (error, result) => {
       if (error) return callback(error);
       callback(null, result.insertId);
     });
   }
 
-  // Kasutaja otsimine kasutajanime järgi
+  // Kasutaja otsimine kasutajanime järgi (toob kaasa ka rolli) 
   static findByUsername(username, callback) {
     const sql = `SELECT * FROM ${this.tableName} WHERE username = ?`;
     db.query(sql, [username], (error, results) => {
