@@ -1,32 +1,24 @@
-// routes/articleRoutes.js
+// routes/articleRouter.js
 const express = require('express');
 const router = express.Router();
-const articleController = require('../controllers/articleController');
+const ArticleController = require('../controllers/articleController'); // Muudatus: suur algustäht
 
-// API ruuterid (tagastavad JSONi)
-router.get('/', articleController.index);        // GET /articles → JSON
-router.get('/:slug', articleController.show);    // GET /articles/slug → JSON
+const articleController = new ArticleController(); // Loome eksemplari
 
-// POST /articles — lisab uue artikli
+// API ruuterid
+router.get('/', articleController.index);
+router.get('/:slug', articleController.show);
 router.post('/', articleController.create);
-
-// PUT /:id — uuendab artiklit
 router.put('/:id', articleController.update);
-
-// DELETE /:id — kustutab artikli
 router.delete('/:id', articleController.delete);
 
-// HTML vaadete ruuterid (renderdavad EJS-i)
-router.get('/list', articleController.indexView);        // GET /articles/list → HTML
-router.get('/:slug/view', articleController.showView);   // GET /articles/slug/view → HTML
-
-// Kuvab uue artikli vormi
+// HTML vaated
+router.get('/list', articleController.indexView);
+router.get('/:slug/view', articleController.showView);
 router.get('/new', articleController.newView);
-
-// Kuvab muutmise vormi
 router.get('/:id/edit', articleController.editView);
 
-// Meetodi ülekirjutamise middleware (et saaks kasutada PUT ja DELETE vormidest)
+// _method middleware
 router.use((req, res, next) => {
   if (req.body._method) {
     req.method = req.body._method;
