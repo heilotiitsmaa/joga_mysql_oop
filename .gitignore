@@ -1,0 +1,14 @@
+# Sõltuvused
+node_modules/
+
+# Keskkonnamuutujad (paroolid)
+.env
+
+# Logid
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operatsioonisüsteemi failid
+.DS_Store
+Thumbs.db

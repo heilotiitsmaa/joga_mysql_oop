@@ -1,13 +1,9 @@
-<!-- views/articles/edit.ejs -->
-<%- include('form', {
+<% layout('../layout') -%>
+
+<%- include('./form.ejs', {
   title: 'Muuda artiklit',
-  action: '/articles/' + article.id,
-  method: 'PUT',
+  action: '/article/update/' + article.id,
+  method: 'POST',
   article: article,
-  button: 'Uuenda artiklit',
-  formatDateForInput: function(date) {
-    if (!date) return '';
-    const d = new Date(date);
-    return d.toISOString().slice(0, 16);
-  }
-}) -%>
+  button: 'Uuenda artiklit'
+}) %>

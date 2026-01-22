@@ -1,10 +1,6 @@
-<!-- views/articles/form.ejs -->
-<% layout('layout') -%>
-
 <h1><%= title %></h1>
 
 <form action="<%= action %>" method="POST">
-  <!-- Meetodi ülekirjutamine (PUT, DELETE) -->
   <input type="hidden" name="_method" value="<%= method %>">
 
   <div class="mb-3">
@@ -20,7 +16,6 @@
   <div class="mb-3">
     <label for="image" class="form-label">Pildi failinimi</label>
     <input type="text" class="form-control" id="image" name="image" value="<%= article.image || '' %>" required>
-    <div class="form-text">Pilt peab asuma kaustas <code>public/images/</code></div>
   </div>
 
   <div class="mb-3">
@@ -31,15 +26,14 @@
   <div class="mb-3">
     <label for="author_id" class="form-label">Autori ID</label>
     <input type="number" class="form-control" id="author_id" name="author_id" value="<%= article.author_id || '' %>" required>
-    <div class="form-text">Autori ID peab olema olemas (1, 2 või 3)</div>
   </div>
 
   <div class="mb-3">
     <label for="published" class="form-label">Avaldamise kuupäev</label>
     <input type="datetime-local" class="form-control" id="published" name="published" 
-           value="<%= formatDateForInput(article.published) || '' %>">
+           value="<%= (article.published) ? new Date(article.published).toISOString().slice(0, 16) : '' %>">
   </div>
 
   <button type="submit" class="btn btn-primary"><%= button %></button>
-  <a href="/articles" class="btn btn-secondary">Tühista</a>
+  <a href="/article/list" class="btn btn-secondary">Tühista</a>
 </form>

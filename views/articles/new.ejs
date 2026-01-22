@@ -1,9 +1,9 @@
-<!-- views/articles/new.ejs -->
-<%- include('form', {
+<% layout('../layout') -%>
+
+<%- include('./form.ejs', {
   title: 'Lisa uus artikkel',
-  action: '/articles',
+  action: '/article/create',
   method: 'POST',
   article: {},
-  button: 'Lisa artikkel',
-  formatDateForInput: function(date) { return ''; }
-}) -%>
+  button: 'Lisa artikkel'
+}) %>

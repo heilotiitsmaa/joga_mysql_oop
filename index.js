@@ -1,42 +1,45 @@
 // index.js
 const express = require('express');
 const session = require('express-session');
+const engine = require('ejs-locals');
+const path = require('path');
 
 // Ruuterid
 const articleRoutes = require('./routes/articleRoutes');
 const userRoutes = require('./routes/userRoutes');
+const authorRoutes = require('./routes/authorRoutes');
 
 const app = express();
-
-// Port
+app.engine('ejs', engine);
 const PORT = 3000;
 
-// Middleware – JÄRJESTUS ON OLULINE!
-app.use(express.static('public')); // Staatiliste failide jaoks (pildid, CSS jne)
-app.use(express.urlencoded({ extended: true })); // Form-data parsimiseks (nt vormidest)
-app.use(express.json()); // JSON-i parsimiseks (nt Postmanist)
+// 1. Vaadete mootori seadistamine (EJS) [cite: 12]
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Määrab vaadete kausta asukoha [cite: 18]
 
-// Sessioonid
+// 2. Middleware
+app.use(express.static(path.join(__dirname, 'public'))); // Staatilised failid [cite: 13]
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
+
+// 3. Sessioonid (Vajalik rollide kontrolliks) [cite: 4, 10]
 app.use(session({
-  secret: 'joga-salajane-voti-2026', // MUUDA TOOTMISES!
+  secret: 'joga-salajane-voti-2026',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // true ainult HTTPS korral
+  cookie: { secure: false }
 }));
 
-// Vaadete mootor
-app.set('view engine', 'ejs');
-
-// Marsruudid
+// 4. Marsruudid (Routes)
 app.use('/article', articleRoutes);
 app.use('/user', userRoutes);
+app.use('/author', authorRoutes); // Kasuta ka autorite ruute
 
-// Valikuline: juurte marsruut (et brauseris midagi näha oleks)
+// Juurmarsruut suunab artiklite loendisse, et brauseris kohe midagi näha oleks 
 app.get('/', (req, res) => {
-  res.send('Joga API töötab! Proovi <a href="/article/list">artiklite loendit</a>.');
+  res.redirect('/article/list'); 
 });
 
-// Serveri käivitamine
 app.listen(PORT, () => {
   console.log(`✅ Server töötab http://localhost:${PORT}`);
 });

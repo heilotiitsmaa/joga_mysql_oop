@@ -1,9 +1,8 @@
-<!-- views/articles/index.ejs -->
-<% layout('layout') -%>
+<% layout('../layout') -%>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h1>Kõik artiklid</h1>
-  <a href="/articles/new" class="btn btn-primary">Lisa uus artikkel</a>
+  <a href="/article/new" class="btn btn-primary">Lisa uus artikkel</a>
 </div>
 
 <div class="row">
@@ -15,9 +14,9 @@
           <h5 class="card-title"><%= article.name %></h5>
           <p class="card-text flex-grow-1"><%= article.body.substring(0, 100) %>...</p>
           <div>
-            <a href="/articles/<%= article.slug %>" class="btn btn-secondary btn-sm me-2">Loe rohkem</a>
-            <a href="/articles/<%= article.id %>/edit" class="btn btn-warning btn-sm me-2">Muuda</a>
-            <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" class="d-inline">
+            <a href="/article/show/<%= article.slug %>" class="btn btn-secondary btn-sm me-2">Loe rohkem</a>
+            <a href="/article/edit/<%= article.id %>" class="btn btn-warning btn-sm me-2">Muuda</a>
+            <form action="/article/delete/<%= article.id %>" method="POST" class="d-inline">
               <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Kas oled kindel?')">Kustuta</button>
             </form>
           </div>
